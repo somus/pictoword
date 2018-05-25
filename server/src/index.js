@@ -66,7 +66,6 @@ const resolvers = {
 	},
 	Picture: {
 		url: async (query, args, ctx) => {
-			return 'http://via.placeholder.com/470x315?text=API+Limit+Reached';
 			try {
 				const photo = await ctx.unsplash.photos.getRandomPhoto({ query }).then(toJson);
 				return photo.urls.regular;
