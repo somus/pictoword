@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function Home() {
 	return (
-		<div>
+		<div className="lh-copy">
 			<p>
 				This is a silly game called Pictoword which I used to play on my mobile. I wanted to do
 				something with the unsplash API. So, I made a web version of the game using ReactJS and
@@ -17,7 +17,9 @@ function Home() {
 				</a>.
 			</p>
 
-			<p>If you have played this game before, awesome! Just press "Start" to continue.</p>
+			<p>
+				If you have played this game before, awesome! Just press <b>Start</b> to continue.
+			</p>
 
 			<p>
 				For those who haven't played this before, Pictoword is game where you read a series of
@@ -26,8 +28,9 @@ function Home() {
 			<p>
 				Since the game uses unsplash's random API, sometimes pictures can be inaccurate. I've tried
 				my best to come up a search query which will give pictures as accurate as possible. But, if
-				you feel the picture is inaccurate, press the <i>refresh</i> button below each picture to
-				get a new one.
+				you feel the picture is inaccurate, press the <b>refresh</b> button below each picture to
+				get a new one. After three refreshes, the <b>reveal clue</b> button is enabled which reveal
+				the clue for that particular picture.
 			</p>
 			<i>
 				Please, don't view this in a mobile as it is not optimized for mobile. I'll try to optimize

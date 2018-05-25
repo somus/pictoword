@@ -8,6 +8,10 @@ body {
 	max-width: 70%;
 }
 
+.w15p {
+	width: 15px;
+}
+
 .hidden {
 	visibility: hidden;
 }

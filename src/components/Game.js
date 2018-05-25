@@ -55,7 +55,7 @@ class Game extends Component {
 		} = this.props;
 
 		if (loading) {
-			return <div className="tc">Loading</div>;
+			return <div className="tc">Loading questions...</div>;
 		}
 
 		if (error) {

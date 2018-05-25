@@ -5,6 +5,7 @@ import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import difference from 'lodash.difference';
 import { getAnswerStatus, setAnswerStatus, getAnswer, setAnswer } from '../data';
+import Picture from './Picture';
 
 class Question extends Component {
 	state = {
@@ -47,6 +48,7 @@ class Question extends Component {
 			const options = {};
 			question.optionKeys.forEach((key, i) => {
 				options[i] = {
+					id: i,
 					key,
 					isUsed: false,
 				};
@@ -130,9 +132,7 @@ class Question extends Component {
 		});
 	};
 
-	getNewPicture = async (e, type) => {
-		e.preventDefault();
-
+	getNewPicture = async type => {
 		const {
 			questionId,
 			questionQuery: { updateQuery },
@@ -165,6 +165,55 @@ class Question extends Component {
 		});
 	};
 
+	revealClue = async type => {
+		const {
+			questionId,
+			questionQuery: { updateQuery },
+			client: { query },
+		} = this.props;
+
+		const result = await query({
+			query: REVEAL_CLUE_QUERY,
+			variables: { id: questionId, type },
+		});
+		const clue = result.data.revealClue;
+
+		updateQuery((previousResult, { variables }) => {
+			const updatedQuestion = {};
+			updatedQuestion[type] = {
+				...previousResult.question[type],
+				clue,
+			};
+
+			const result = {
+				...previousResult,
+				question: {
+					...previousResult.question,
+					...updatedQuestion,
+				},
+			};
+
+			return result;
+		});
+	};
+
+	getOptionsContent = options => (
+		<div className="lh-title tracked">
+			{options.map(opt => (
+				<a
+					key={opt.id}
+					className={`f4 link dim br2 ba bw1 ph3 pv2 dib black ttc ma1 w15p${
+						opt.isUsed ? ' hidden' : ''
+					}`}
+					href={`#${opt.key}`}
+					onClick={e => this.handleOptionsKeyClick(e, opt.id)}
+				>
+					{opt.key}
+				</a>
+			))}
+		</div>
+	);
+
 	render() {
 		const { answerKeys, options } = this.state;
 		const {
@@ -172,7 +221,7 @@ class Question extends Component {
 		} = this.props;
 
 		if (loading) {
-			return <div className="tc">Loading</div>;
+			return <div className="tc">Question loading...</div>;
 		}
 
 		if (error) {
@@ -185,25 +234,20 @@ class Question extends Component {
 		return (
 			<div className="mb3">
 				<div className="flex justify-around mb3">
-					<div className="pr3-ns mb4 mb0-ns w-100 w-45-ns tc">
-						<img src={picture1.url} className="db" alt="Clue 1" />
-						<a
-							href="#reloadPic"
-							className="link f5 dib mt2"
-							onClick={e => this.getNewPicture(e, 'picture1')}
-						>
-							Reload
-						</a>
-					</div>
-					<div
-						className="pr3-ns mb4 mb0-ns w-100 w-45-ns tc"
-						onClick={e => this.getNewPicture(e, 'picture2')}
-					>
-						<img src={picture2.url} className="db" alt="Clue 2" />
-						<a href="#reloadPic" className="link f5 dib mt2">
-							Reload
-						</a>
-					</div>
+					<Picture
+						url={picture1.url}
+						clue={picture1.clue}
+						type="picture1"
+						getNewPicture={this.getNewPicture}
+						revealClue={this.revealClue}
+					/>
+					<Picture
+						url={picture2.url}
+						clue={picture2.clue}
+						type="picture2"
+						getNewPicture={this.getNewPicture}
+						revealClue={this.revealClue}
+					/>
 				</div>
 				<div className="pa3 tc ma1">
 					{answerKeys.map((keyId, i) => (
@@ -218,38 +262,8 @@ class Question extends Component {
 				</div>
 				{answerStatus !== 'correct' ? (
 					<div className="tc w-50 center">
-						<div className="mb1">
-							{Object.keys(options)
-								.slice(0, 7)
-								.map(optId => (
-									<a
-										key={optId}
-										className={`f4 link dim br2 ba bw1 ph3 pv2 dib black ttc mh1${
-											options[optId].isUsed ? ' hidden' : ''
-										}`}
-										href={`#${options[optId].key}`}
-										onClick={e => this.handleOptionsKeyClick(e, optId)}
-									>
-										{options[optId].key}
-									</a>
-								))}
-						</div>
-						<div className="mt1">
-							{Object.keys(options)
-								.slice(7)
-								.map(optId => (
-									<a
-										key={optId}
-										className={`f4 link dim br2 ba bw1 ph3 pv2 dib black ttc mh1${
-											options[optId].isUsed ? ' hidden' : ''
-										}`}
-										href={`#${options[optId].key}`}
-										onClick={e => this.handleOptionsKeyClick(e, optId)}
-									>
-										{options[optId].key}
-									</a>
-								))}
-						</div>
+						{this.getOptionsContent(Object.values(options).slice(0, 7))}
+						{this.getOptionsContent(Object.values(options).slice(7))}
 						{answerStatus === 'incorrect' && <p className="f5 b red tc">Incorrect Answer</p>}
 					</div>
 				) : (
@@ -268,9 +282,11 @@ const QUESTION_QUERY = gql`
 			optionKeys
 			picture1 {
 				url
+				clue
 			}
 			picture2 {
 				url
+				clue
 			}
 		}
 	}
@@ -290,11 +306,15 @@ const GET_NEW_PICTURE_QUERY = gql`
 	}
 `;
 
+const REVEAL_CLUE_QUERY = gql`
+	query RevealClueQuery($id: ID!, $type: String!) {
+		revealClue(id: $id, type: $type)
+	}
+`;
+
 export default graphql(QUESTION_QUERY, {
 	name: 'questionQuery',
 	options: ownProps => ({
 		variables: { id: ownProps.questionId },
 	}),
 })(withApollo(Question));
-
-// export default Question;
