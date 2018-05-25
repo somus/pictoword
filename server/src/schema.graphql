@@ -1,0 +1,18 @@
+type Query {
+	questions: [Question!]!
+	question(id: ID!): Question
+	checkAnswer(id: ID!, answer: String!): Boolean!
+	getNewPicture(id: ID!, type: String!): Picture!
+}
+
+type Question {
+	id: ID!
+	answerLength: Int!
+	optionKeys: [String!]!
+	picture1: Picture!
+	picture2: Picture!
+}
+
+type Picture {
+	url: String!
+}

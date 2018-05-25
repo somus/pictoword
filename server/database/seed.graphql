@@ -1,0 +1,79 @@
+
+  mutation createQuestions {
+    
+    question_7cwryyhfzqm: createQuestion(data: { picture1: "star", picture2: "art", answer: "start" }) {
+      id
+    }
+  
+
+    question_emomlx4mnof: createQuestion(data: { picture1: "baby feet", picture2: "ball", answer: "football" }) {
+      id
+    }
+  
+
+    question_i0ea0dctlat: createQuestion(data: { picture1: "lime", picture2: "stone", answer: "limestone" }) {
+      id
+    }
+  
+
+    question_ynmjbmbdi4i: createQuestion(data: { picture1: "fire", picture2: "dog", answer: "hotdog" }) {
+      id
+    }
+  
+
+    question_xwayuxgvobf: createQuestion(data: { picture1: "horse", picture2: "shoe", answer: "horseshoe" }) {
+      id
+    }
+  
+
+    question_jzoz3xnvhn9: createQuestion(data: { picture1: "key", picture2: "blackboard", answer: "keyboard" }) {
+      id
+    }
+  
+
+    question_43ca9nfdp8q: createQuestion(data: { picture1: "cup", picture2: "cake", answer: "cupcake" }) {
+      id
+    }
+  
+
+    question_4oziuf7j0yc: createQuestion(data: { picture1: "jump", picture2: "rope", answer: "jumprope" }) {
+      id
+    }
+  
+
+    question_1eksjcsl3lw: createQuestion(data: { picture1: "ice", picture2: "box", answer: "icebox" }) {
+      id
+    }
+  
+
+    question_3x05d08v0on: createQuestion(data: { picture1: "suit", picture2: "briefcase", answer: "suitcase" }) {
+      id
+    }
+  
+
+    question_4ci704mnl18: createQuestion(data: { picture1: "web", picture2: "mail", answer: "webmail" }) {
+      id
+    }
+  
+
+    question_nr8c8je9e7n: createQuestion(data: { picture1: "woman", picture2: "bug", answer: "ladybug" }) {
+      id
+    }
+  
+
+    question_qwmh3wdo66e: createQuestion(data: { picture1: "bean", picture2: "bag", answer: "beanbag" }) {
+      id
+    }
+  
+
+    question_urb3x93846: createQuestion(data: { picture1: "ice", picture2: "scream", answer: "icecream" }) {
+      id
+    }
+  
+
+    question_m4mv5we0s7q: createQuestion(data: { picture1: "door", picture2: "way", answer: "doorway" }) {
+      id
+    }
+  
+  }
+  

@@ -1,0 +1,30 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.w70 {
+	max-width: 70%;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.black {
+	color: #111;
+}
+
+.hover-bg-black:hover {
+	background-color: #111;
+}
+
+a {
+	color: #999999;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: rgba(0, 0, 0, 0.7);
+}

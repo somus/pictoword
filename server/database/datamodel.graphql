@@ -1,0 +1,6 @@
+type Question {
+  id: ID! @unique
+  picture1: String!
+  picture2: String!
+  answer: String!
+}

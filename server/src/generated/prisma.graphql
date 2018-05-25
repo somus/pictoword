@@ -1,0 +1,343 @@
+# source: https://eu1.prisma.sh/public-prismcat-86/pictoword-server/dev
+# timestamp: Tue May 22 2018 12:21:01 GMT+0530 (IST)
+
+type AggregateQuestion {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createQuestion(data: QuestionCreateInput!): Question!
+  updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
+  deleteQuestion(where: QuestionWhereUniqueInput!): Question
+  upsertQuestion(where: QuestionWhereUniqueInput!, create: QuestionCreateInput!, update: QuestionUpdateInput!): Question!
+  updateManyQuestions(data: QuestionUpdateInput!, where: QuestionWhereInput): BatchPayload!
+  deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  questions(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question]!
+  question(where: QuestionWhereUniqueInput!): Question
+  questionsConnection(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QuestionConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Question implements Node {
+  id: ID!
+  picture1: String!
+  picture2: String!
+  answer: String!
+}
+
+"""A connection to a list of items."""
+type QuestionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [QuestionEdge]!
+  aggregate: AggregateQuestion!
+}
+
+input QuestionCreateInput {
+  picture1: String!
+  picture2: String!
+  answer: String!
+}
+
+"""An edge in a connection."""
+type QuestionEdge {
+  """The item at the end of the edge."""
+  node: Question!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum QuestionOrderByInput {
+  id_ASC
+  id_DESC
+  picture1_ASC
+  picture1_DESC
+  picture2_ASC
+  picture2_DESC
+  answer_ASC
+  answer_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type QuestionPreviousValues {
+  id: ID!
+  picture1: String!
+  picture2: String!
+  answer: String!
+}
+
+type QuestionSubscriptionPayload {
+  mutation: MutationType!
+  node: Question
+  updatedFields: [String!]
+  previousValues: QuestionPreviousValues
+}
+
+input QuestionSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [QuestionSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [QuestionSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [QuestionSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: QuestionWhereInput
+}
+
+input QuestionUpdateInput {
+  picture1: String
+  picture2: String
+  answer: String
+}
+
+input QuestionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [QuestionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [QuestionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [QuestionWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  picture1: String
+
+  """All values that are not equal to given value."""
+  picture1_not: String
+
+  """All values that are contained in given list."""
+  picture1_in: [String!]
+
+  """All values that are not contained in given list."""
+  picture1_not_in: [String!]
+
+  """All values less than the given value."""
+  picture1_lt: String
+
+  """All values less than or equal the given value."""
+  picture1_lte: String
+
+  """All values greater than the given value."""
+  picture1_gt: String
+
+  """All values greater than or equal the given value."""
+  picture1_gte: String
+
+  """All values containing the given string."""
+  picture1_contains: String
+
+  """All values not containing the given string."""
+  picture1_not_contains: String
+
+  """All values starting with the given string."""
+  picture1_starts_with: String
+
+  """All values not starting with the given string."""
+  picture1_not_starts_with: String
+
+  """All values ending with the given string."""
+  picture1_ends_with: String
+
+  """All values not ending with the given string."""
+  picture1_not_ends_with: String
+  picture2: String
+
+  """All values that are not equal to given value."""
+  picture2_not: String
+
+  """All values that are contained in given list."""
+  picture2_in: [String!]
+
+  """All values that are not contained in given list."""
+  picture2_not_in: [String!]
+
+  """All values less than the given value."""
+  picture2_lt: String
+
+  """All values less than or equal the given value."""
+  picture2_lte: String
+
+  """All values greater than the given value."""
+  picture2_gt: String
+
+  """All values greater than or equal the given value."""
+  picture2_gte: String
+
+  """All values containing the given string."""
+  picture2_contains: String
+
+  """All values not containing the given string."""
+  picture2_not_contains: String
+
+  """All values starting with the given string."""
+  picture2_starts_with: String
+
+  """All values not starting with the given string."""
+  picture2_not_starts_with: String
+
+  """All values ending with the given string."""
+  picture2_ends_with: String
+
+  """All values not ending with the given string."""
+  picture2_not_ends_with: String
+  answer: String
+
+  """All values that are not equal to given value."""
+  answer_not: String
+
+  """All values that are contained in given list."""
+  answer_in: [String!]
+
+  """All values that are not contained in given list."""
+  answer_not_in: [String!]
+
+  """All values less than the given value."""
+  answer_lt: String
+
+  """All values less than or equal the given value."""
+  answer_lte: String
+
+  """All values greater than the given value."""
+  answer_gt: String
+
+  """All values greater than or equal the given value."""
+  answer_gte: String
+
+  """All values containing the given string."""
+  answer_contains: String
+
+  """All values not containing the given string."""
+  answer_not_contains: String
+
+  """All values starting with the given string."""
+  answer_starts_with: String
+
+  """All values not starting with the given string."""
+  answer_not_starts_with: String
+
+  """All values ending with the given string."""
+  answer_ends_with: String
+
+  """All values not ending with the given string."""
+  answer_not_ends_with: String
+}
+
+input QuestionWhereUniqueInput {
+  id: ID
+}
+
+type Subscription {
+  question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
+}

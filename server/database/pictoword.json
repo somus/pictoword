@@ -1,0 +1,77 @@
+[
+	{
+		"picture1": "star",
+		"picture2": "art",
+		"answer": "start"
+	},
+	{
+		"picture1": "baby feet",
+		"picture2": "ball",
+		"answer": "football"
+	},
+	{
+		"picture1": "lime",
+		"picture2": "stone",
+		"answer": "limestone"
+	},
+	{
+		"picture1": "fire",
+		"picture2": "dog",
+		"answer": "hotdog"
+	},
+	{
+		"picture1": "horse",
+		"picture2": "shoe",
+		"answer": "horseshoe"
+	},
+	{
+		"picture1": "snow",
+		"picture2": "globe",
+		"answer": "snowglobe"
+	},
+	{
+		"picture1": "cup",
+		"picture2": "cake",
+		"answer": "cupcake"
+	},
+	{
+		"picture1": "jump",
+		"picture2": "rope",
+		"answer": "jumprope"
+	},
+	{
+		"picture1": "car",
+		"picture2": "pet",
+		"answer": "carpet"
+	},
+	{
+		"picture1": "suit",
+		"picture2": "briefcase",
+		"answer": "suitcase"
+	},
+	{
+		"picture1": "web",
+		"picture2": "mail",
+		"answer": "webmail"
+	},
+	{
+		"picture1": "woman",
+		"picture2": "bug",
+		"answer": "ladybug"
+	},
+	{
+		"picture1": "bean",
+		"picture2": "bag",
+		"answer": "beanbag"
+	},
+	{
+		"picture1": "ice",
+		"picture2": "scream",
+		"answer": "icecream"
+	},
+	{
+		"picture1": "door",
+		"picture2": "path",
+		"answer": "doorway"
+	}
+]
