@@ -2,8 +2,31 @@ require('es6-promise').polyfill();
 require('isomorphic-fetch');
 const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
+const DataLoader = require('dataloader');
 const { default: Unsplash, toJson } = require('unsplash-js');
 const shuffle = require('lodash.shuffle');
+
+const unsplash = new Unsplash({
+	applicationId: '5f5bd1a9b6a187ca18755b58679030afe76cf92130a1a3f020d9d9bf23d0425f',
+	secret: '77e1e3c32b88bfd9f99502b1ab23254cd555960769551dd97c6b102e52deed6e',
+});
+const unsplashLoader = new DataLoader(
+	async queries => {
+		const values = await Promise.all(
+			queries.map(query =>
+				unsplash.photos
+					.getRandomPhoto({ query })
+					.then(toJson)
+					.catch(e => ({})),
+			),
+		);
+
+		return values;
+	},
+	{
+		cache: false,
+	},
+);
 
 const getRandomCharacters = count => {
 	const result = [];
@@ -43,7 +66,7 @@ const resolvers = {
 				throw new Error('Question not found');
 			}
 
-			return question[type];
+			return unsplashLoader.load(question[type]);
 		},
 		async revealClue(parent, { id, type }, ctx) {
 			const question = await ctx.db.query.question({ where: { id } }, `{ ${type} }`);
@@ -63,15 +86,24 @@ const resolvers = {
 
 			return shuffle([...answerKeys, ...remainingKeys]);
 		},
+		picture1: parent => {
+			return unsplashLoader.load(parent.picture1);
+		},
+		picture2: parent => {
+			return unsplashLoader.load(parent.picture2);
+		},
 	},
 	Picture: {
-		url: async (query, args, ctx) => {
-			try {
-				const photo = await ctx.unsplash.photos.getRandomPhoto({ query }).then(toJson);
-				return photo.urls.regular;
-			} catch (e) {
-				return 'http://via.placeholder.com/470x315?text=API+Limit+Reached';
-			}
+		url: photo => {
+			return photo.urls
+				? photo.urls.regular
+				: 'http://via.placeholder.com/470x315?text=Unsplash+API+Limit+Reached';
+		},
+		attributionName: photo => {
+			return photo.user ? photo.user.name : 'Unsplash API Limit Reached';
+		},
+		attributionLink: photo => {
+			return photo.user ? photo.user.links.html : 'https://unsplash.com';
 		},
 	},
 };
@@ -86,10 +118,6 @@ const server = new GraphQLServer({
 			endpoint: 'https://eu1.prisma.sh/public-prismcat-86/pictoword-server/dev', // the endpoint of the Prisma API
 			debug: false, // log all GraphQL queries & mutations sent to the Prisma API
 			// secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
-		}),
-		unsplash: new Unsplash({
-			applicationId: '5f5bd1a9b6a187ca18755b58679030afe76cf92130a1a3f020d9d9bf23d0425f',
-			secret: '77e1e3c32b88bfd9f99502b1ab23254cd555960769551dd97c6b102e52deed6e',
 		}),
 	}),
 });

@@ -9,6 +9,7 @@
 		"generate-seed": "node ./database/generateSeed.js"
 	},
 	"dependencies": {
+		"dataloader": "^1.4.0",
 		"dotenv": "^5.0.1",
 		"es6-promise": "^4.2.4",
 		"graphql-yoga": "^1.14.3",

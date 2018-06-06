@@ -16,5 +16,7 @@ type Question {
 
 type Picture {
 	url: String!
+	attributionName: String!
+	attributionLink: String!
 	clue: String
 }

@@ -144,16 +144,17 @@ class Question extends Component {
 			fetchPolicy: 'network-only',
 			variables: { id: questionId, type },
 		});
-		const newUrl = result.data.getNewPicture.url;
 
 		updateQuery((previousResult, { variables }) => {
 			const updatedQuestion = {};
 			updatedQuestion[type] = {
 				...previousResult.question[type],
-				url: newUrl,
+				url: result.data.getNewPicture.url,
+				attributionName: result.data.getNewPicture.attributionName,
+				attributionLink: result.data.getNewPicture.attributionLink,
 			};
 
-			const result = {
+			const data = {
 				...previousResult,
 				question: {
 					...previousResult.question,
@@ -161,7 +162,7 @@ class Question extends Component {
 				},
 			};
 
-			return result;
+			return data;
 		});
 	};
 
@@ -237,6 +238,8 @@ class Question extends Component {
 					<Picture
 						url={picture1.url}
 						clue={picture1.clue}
+						attributionName={picture1.attributionName}
+						attributionLink={picture1.attributionLink}
 						type="picture1"
 						getNewPicture={this.getNewPicture}
 						revealClue={this.revealClue}
@@ -244,6 +247,8 @@ class Question extends Component {
 					<Picture
 						url={picture2.url}
 						clue={picture2.clue}
+						attributionName={picture2.attributionName}
+						attributionLink={picture2.attributionLink}
 						type="picture2"
 						getNewPicture={this.getNewPicture}
 						revealClue={this.revealClue}
@@ -283,10 +288,14 @@ const QUESTION_QUERY = gql`
 			picture1 {
 				url
 				clue
+				attributionName
+				attributionLink
 			}
 			picture2 {
 				url
 				clue
+				attributionName
+				attributionLink
 			}
 		}
 	}
@@ -302,6 +311,8 @@ const GET_NEW_PICTURE_QUERY = gql`
 	query GetNewPictureQuery($id: ID!, $type: String!) {
 		getNewPicture(id: $id, type: $type) {
 			url
+			attributionName
+			attributionLink
 		}
 	}
 `;
